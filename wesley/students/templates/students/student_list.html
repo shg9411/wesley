@@ -1,0 +1,45 @@
+{% extends 'students/base.html' %}
+
+{% block main %}
+<h1 align='center'>Talk 8282 Students List</h1>
+<h2 align='right'>총 {{object_list.count}}명</h2>
+<table class='table table-hover table-striped' align='center'>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Calss</th>
+            <th>Korean_name</th>
+            <th>Eng_name</th>
+            <th>Phone</th>
+            <th>Parents_phone</th>
+            <th>Study_time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{object.group}}</td>
+            <td><a href="{% url 'student-detail' object.id %}">{{object.korean_name}}</a></td>
+            <td>{{object.eng_name}}</td>
+            <td>
+                {% if object.phone %}{{object.phone|slice:"0:3"}}-{{object.phone|slice:"3:7"}}-{{object.phone|slice:"7:"}}{% else %}-{%endif%}
+            </td>
+            <td>
+                {% if object.parents_phone %}{{object.parents_phone|slice:"0:3"}}-{{object.parents_phone|slice:"3:7"}}-{{object.parents_phone|slice:"7:"}}{% else %}-{%endif%}
+            </td>
+            <td>
+                {% for tmp in object.study_set.all %}
+                {{tmp.days_of_week}} - {{tmp.time}} ({{tmp.teacher}})
+                <br>
+                {%endfor%}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<p style="text-align:center">
+    <a class="btn btn-success" href='{% url "student-create" %}'>신규 등록</a>
+</p>
+{% endblock %}

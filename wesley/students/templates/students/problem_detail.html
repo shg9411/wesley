@@ -1,0 +1,22 @@
+{% extends 'students/base.html' %}
+
+{% block main %}
+{{object.date}}
+<br>
+{{object.student}}
+<br>
+{{object.problem}}
+<br>
+{% if object.finished %}
+완료
+{% else %}
+미완료
+{%endif%}
+<br>
+<a class="btn btn-success"
+    href='{% url "problem" %}'>목록으로</a>
+<a class="btn btn-success"
+    href='{% url "problem-update" object.id %}'>수정하기</a>
+<a class="btn btn-success" href='{% url "problem-delete" object.id %}'
+    onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
+{% endblock %}
