@@ -1,27 +1,39 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from .models import Study, Student, Problem
+from .models import Student, Problem, Regular, Temporary, Teacher
 from .forms import ProblemCreateForm, ProblemUpdateForm, StudentUpdateForm
 #from django.core.paginator import Paginator
 import datetime
+
+
 class ProblemLV(ListView):
     template_name = 'students/problem_list.html'
     context_object_name = 'problem_list'
 
     def get_queryset(self):
-        return Problem.objects.all()
+        return Problem.objects.filter(finished=False)
 
 
 class ScheduleLV(ListView):
     template_name = 'students/study_list.html'
     context_object_name = 'study_list'
+    # def get_queryset(self):
+    #    return Regular.objects.all()
+    queryset = Regular.objects.all().order_by('time','days_of_week')
 
-    def get_queryset(self):
-        return datetime.datetime.now()
+    def get_context_data(self, **kwargs):
+        context = super(ScheduleLV, self).get_context_data(**kwargs)
+        context['temp'] = Temporary.objects.filter(
+            temp_date__week=datetime.date.today().isocalendar()[1])
+        return context
+        # return {"temp": Temporary.objects.filter(temp_date__week=datetime.date.today().isocalendar()[1]), "regular": Regular.objects.all()}
+        
+
 
 class StudentLV(ListView):
     template_name = 'students/student_list.html'
     context_object_name = 'student_list'
+
     def get_queryset(self):
         return Student.objects.all()
 
@@ -56,6 +68,7 @@ class ProblemUV(UpdateView):
         problem = get_object_or_404(Problem, pk=self.kwargs['pk'])
         return problem
 
+
 class StudentCV(CreateView):
     model = Student
     fields = '__all__'
@@ -76,6 +89,7 @@ def delete_problem(request, pk):
     return redirect('problem')
 
 
-def delete_student(request,pk):
+def delete_student(request, pk):
     Student.objects.get(pk=pk).delete()
     return redirect('student')
+

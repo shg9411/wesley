@@ -1,6 +1,7 @@
 {% extends 'students/base.html' %}
 
 {% block main %}
+{% if object_list %}
 <table class='table table-hover table-striped' align='center'>
     <thead>
         <tr>
@@ -22,6 +23,14 @@
     </tr>
     {% endfor %}
 </table>
-<br/>
-<button type="button" class="btn btn-success float-right" onclick="location.href='{% url "problem-create" %}'">등록</a></button>
+<br />
+{% else %}
+<div class="alert alert-primary" role="alert">
+  현재 처리하지 않은 Problem이 없습니다.
+</div>
+{% endif %}
+
+
+<button type="button" class="btn btn-success float-right"
+    onclick="location.href='{% url "problem-create" %}'">등록</a></button>
 {% endblock %}

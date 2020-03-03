@@ -64,29 +64,37 @@ class Student(models.Model):
         return '{} - {}({})'.format(self.korean_name, self.eng_name, self.group)
 
 
-class StudyType(models.Model):
-    study_type = models.CharField(max_length=20)
+# class StudyType(models.Model):
+#     study_type = models.CharField(max_length=20)
 
-    def __str__(self):
-        return self.study_type
+#     def __str__(self):
+#         return self.study_type
 
 
 class Study(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    study_type = models.ForeignKey(
-        StudyType, default='Regular', on_delete=models.CASCADE)
-    start_on = models.DateField(default=datetime.date.today)
-    days_of_week = models.CharField(max_length=10, choices=day_of_week)
     time = models.TimeField(choices=time_choices)
     duration = models.DurationField(default=datetime.timedelta(minutes=20))
 
     class Meta:
-        #ordering = ('days_of_week',)
-        unique_together = (("teacher", "days_of_week", "time"),)
+        abstract = True
+
+
+class Regular(Study):
+    start_on = models.DateField(default=datetime.date.today)
+    days_of_week = models.CharField(max_length=10, choices=day_of_week)
 
     def __str__(self):
-        return '{} - {} on {} {}'.format(self.student, self.study_type, self.days_of_week, self.time)
+        return '{} - on {} {}'.format(self.student, self.days_of_week, self.time)
+    class Meta:
+        ordering = ['days_of_week','time']
+
+class Temporary(Study):
+    temp_date = models.DateField(default=datetime.date.today)
+
+    def __str__(self):
+        return '{} - on {} {}'.format(self.student, self.temp_date, self.time)
 
 
 class Problem(models.Model):

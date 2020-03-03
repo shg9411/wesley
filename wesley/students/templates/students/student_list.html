@@ -29,7 +29,7 @@
                 {% if object.parents_phone %}{{object.parents_phone|slice:"0:3"}}-{{object.parents_phone|slice:"3:7"}}-{{object.parents_phone|slice:"7:"}}{% else %}-{%endif%}
             </td>
             <td>
-                {% for tmp in object.study_set.all %}
+                {% for tmp in object.regular_set.all %}
                 {{tmp.days_of_week}} - {{tmp.time}} ({{tmp.teacher}})
                 <br>
                 {%endfor%}
