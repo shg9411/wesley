@@ -16,18 +16,11 @@ class ProblemLV(ListView):
 
 class ScheduleLV(ListView):
     template_name = 'students/study_list.html'
-    context_object_name = 'study_list'
-    # def get_queryset(self):
-    #    return Regular.objects.all()
-    queryset = Regular.objects.all().order_by('time','days_of_week')
-
-    def get_context_data(self, **kwargs):
-        context = super(ScheduleLV, self).get_context_data(**kwargs)
-        context['temp'] = Temporary.objects.filter(
-            temp_date__week=datetime.date.today().isocalendar()[1])
-        return context
-        # return {"temp": Temporary.objects.filter(temp_date__week=datetime.date.today().isocalendar()[1]), "regular": Regular.objects.all()}
-        
+    context_object_name = 'temp_list'
+    
+    def get_queryset(self):
+        return datetime.datetime.now()
+    
 
 
 class StudentLV(ListView):
@@ -48,6 +41,12 @@ class ProblemDV(DetailView):
     model = Problem
     template_name = 'students/problem_detail.html'
     context_object_name = 'problem'
+
+
+class TemporaryDV(DetailView):
+    model = Temporary
+    template_name = 'students/temp_detail.html'
+    context_object_name = 'temp'
 
 
 def index(request):
@@ -92,4 +91,3 @@ def delete_problem(request, pk):
 def delete_student(request, pk):
     Student.objects.get(pk=pk).delete()
     return redirect('student')
-

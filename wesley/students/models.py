@@ -5,6 +5,8 @@ from django.urls import reverse
 day_of_week = (('monday', 'Monday'), ('tuesday', 'Tuesday'), (
     'wednesday', 'Wednesday'), ('thursday', 'Thursday'), ('friday', 'Friday'))
 
+kinds = (('event1', 'Event1'), ('event2', 'Event2'), ('makeup', 'MakeUp'))
+
 time_choices = ((datetime.time(16, 00, 00), '16:00'),
                 (datetime.time(16, 20, 00), '16:20'),
                 (datetime.time(16, 40, 00), '16:40'),
@@ -52,6 +54,7 @@ class Student(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     parents_phone = models.CharField(max_length=20)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    event = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['group', ]
@@ -87,12 +90,19 @@ class Regular(Study):
 
     def __str__(self):
         return '{} - on {} {}'.format(self.student, self.days_of_week, self.time)
+
     class Meta:
-        ordering = ['days_of_week','time']
+        ordering = ['days_of_week', 'time']
+
 
 class Temporary(Study):
     temp_date = models.DateField(default=datetime.date.today)
-
+    kind = models.CharField(max_length=20, choices=kinds)
+    reason = models.CharField(max_length = 100, blank=True)
+    @property
+    def wd(self):
+        return self.temp_date.weekday()
+        
     def __str__(self):
         return '{} - on {} {}'.format(self.student, self.temp_date, self.time)
 

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import ScheduleLV, StudentLV, StudentDV, index, ProblemLV, ProblemDV, ProblemCV, ProblemUV, delete_problem, StudentUV, StudentCV, delete_student
+from .views import ScheduleLV, StudentLV, StudentDV, index, ProblemLV, ProblemDV, ProblemCV, ProblemUV, delete_problem, StudentUV, StudentCV, delete_student, TemporaryDV
 
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
     path('student/', StudentLV.as_view(), name='student'),
     path('student/<int:pk>/', StudentDV.as_view(), name='student-detail'),
     path('student/<int:pk>/update/', StudentUV.as_view(), name='student-update'),
+    path('schedule/<int:pk>/',TemporaryDV.as_view(), name='temp-detail'),
     path('problem/', ProblemLV.as_view(), name='problem'),
     path('problem/<int:pk>/', ProblemDV.as_view(), name='problem-detail'),
     path('problem/create/', ProblemCV.as_view(), name='problem-create'),

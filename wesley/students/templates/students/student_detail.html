@@ -5,10 +5,10 @@
 <br>
 Cell : {{object.phone}}<br>
 Parents Cell : {{object.parents_phone}}<br>
-{% for study in object.study_set.all %}
+{% for study in object.regular_set.all %}
 {{study.days_of_week|upper}} - {{study.time}}<br>
 {% endfor%}
-With {{object.study_set.first.teacher}}
+With {{object.regular_set.first.teacher}}
 <br>
 <a class="btn btn-success" href='{% url "student" %}'>목록으로</a>
 <a class="btn btn-success" href='{% url "student-update" object.id %}'>수정하기</a>
