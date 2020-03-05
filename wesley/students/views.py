@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Student, Problem, Regular, Temporary, Teacher
-from .forms import ProblemCreateForm, ProblemUpdateForm, StudentUpdateForm
+from .forms import ProblemCreateForm, ProblemUpdateForm, StudentUpdateForm, TemporaryUpdateForm
 #from django.core.paginator import Paginator
 import datetime
 
@@ -58,6 +58,15 @@ class ProblemCV(CreateView):
     fields = ('student', 'problem')
 
 
+class TemporaryUV(UpdateView):
+    context_object_name='temporary'
+    form_class = TemporaryUpdateForm
+    template_name = 'students/temporary_update.html'
+
+    def get_object(self):
+        temp = get_object_or_404(Temporary, pk=self.kwargs['pk'])
+        return temp
+
 class ProblemUV(UpdateView):
     context_object_name = 'problem'
     form_class = ProblemUpdateForm
@@ -91,3 +100,8 @@ def delete_problem(request, pk):
 def delete_student(request, pk):
     Student.objects.get(pk=pk).delete()
     return redirect('student')
+
+
+def delete_temporary(request, pk):
+    Temporary.objects.get(pk=pk).delete()
+    return redirect('schedule')

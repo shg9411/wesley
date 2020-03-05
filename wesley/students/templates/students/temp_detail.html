@@ -3,10 +3,12 @@
 {% block main %}
 {{object}}
 <br>
+{{object.reason}}
+<br>
 <a class="btn btn-success"
-    href='{% url "problem" %}'>목록으로</a>
+    href='{% url "schedule" %}'>목록으로</a>
 <a class="btn btn-success"
-    href='{% url "problem-update" object.id %}'>수정하기</a>
-<a class="btn btn-success" href='{% url "problem-delete" object.id %}'
+    href='{% url "temp-update" object.id %}'>수정하기</a>
+<a class="btn btn-success" href='{% url "temp-delete" object.id %}'
     onclick="return confirm('정말 삭제하시겠습니까?')">삭제하기</a>
 {% endblock %}

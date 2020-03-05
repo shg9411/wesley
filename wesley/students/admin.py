@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Teacher, Group, Regular, Temporary, Problem, Absent
+from .models import Student, Teacher, Group, Regular, Temporary, Problem
 
 
 @admin.register(Teacher)
@@ -28,9 +28,4 @@ class TemporaryAdmin(admin.ModelAdmin):
 
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Absent)
-class AbsentAdmin(admin.ModelAdmin):
     pass

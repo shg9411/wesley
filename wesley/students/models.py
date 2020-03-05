@@ -98,11 +98,15 @@ class Regular(Study):
 class Temporary(Study):
     temp_date = models.DateField(default=datetime.date.today)
     kind = models.CharField(max_length=20, choices=kinds)
-    reason = models.CharField(max_length = 100, blank=True)
+    reason = models.CharField(max_length=100, blank=True)
+    
     @property
     def wd(self):
         return self.temp_date.weekday()
-        
+
+    def get_absolute_url(self):
+        return reverse('temp-detail', args=[self.id])
+
     def __str__(self):
         return '{} - on {} {}'.format(self.student, self.temp_date, self.time)
 
@@ -121,16 +125,3 @@ class Problem(models.Model):
 
     def __str__(self):
         return '{} - {}, {}'.format(self.student, self.problem, self.date)
-
-
-class Absent(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    why = models.CharField(max_length=100)
-    have_to_check = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ('date', 'student',)
-
-    def __str__(self):
-        return '{} - {}, {}'.format(self.student, self.date, self.have_to_check)
