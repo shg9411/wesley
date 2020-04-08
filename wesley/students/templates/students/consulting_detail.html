@@ -1,0 +1,54 @@
+{% extends 'students/base.html' %}
+
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+        <div class="card">
+            <table class="table table-bordered" style="text-align:center;">
+                <thead class="thead-light">
+                    <tr>
+                        <th width="30%" scope="col">제목</th>
+                        <th width="70%" scope="col"><a
+                                href="{% url 'students:consult-edit' consulting.pk %}">{{consulting.title}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">학생</th>
+                        <td>{{consulting.student}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">상담자</th>
+                        <td>{{consulting.counselor}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">제목</th>
+                        <td>{{consulting.title}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">내용</th>
+                        <td>{{consulting.content}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class='row'>
+                <div class='col-sm'>
+                </div>
+                <div class='col-sm'>
+                    <button type="button" class="btn btn-success"
+                        onclick="location.href='{% url "students:consult-edit" pk=consulting.pk %}'">수정</button>
+                </div>
+                <div class='col-sm'>
+                </div>
+                <div class='col-sm'>
+                    <button type="button" class="btn btn-danger"
+                        onclick="location.href='{% url "students:consult-delete" pk=consulting.pk %}'">삭제</button>
+                </div>
+                <div class='col-sm'>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

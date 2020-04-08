@@ -1,0 +1,67 @@
+{% extends 'students/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row'>
+  <div class='col-sm'>
+    <div class="card border-0 shadow my-5">
+      <div class='row'>
+        <div class='col' align='center'>
+          <a class="btn btn-primary" data-toggle="collapse" href="#searchCollapse" aria-expanded="false"
+            aria-controls="searchCollapse">
+            학생 검색
+          </a>
+        </div>
+        <div class='col' align='center'>
+          <a href="{% url 'students:student-new' %}" class="btn btn-primary">학생 추가</a>
+        </div>
+      </div>
+      <div class="collapse" id="searchCollapse">
+        <div class="card-body p-5">
+          <form method="get">
+            {{ filter.form|crispy }}
+            <button type="submit" class="btn btn-primary">검색</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {% if filter.qs %}
+    <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>번호</th>
+          <th scope='col'>상태</th>
+          <th scope='col'>유형</th>
+          <th scope='col'>유형상세</th>
+          <th scope='col'>현재반</th>
+          <th scope='col'>이름</th>
+          <th scope='col'>영어이름</th>
+          <th scope='col'>학교명</th>
+          <th scope='col'>학년</th>
+          <th scope='col'>성별</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in filter.qs %}
+        <tr>
+          <th scope='row'>{{forloop.counter}}</th>
+          <td>{{student.status}}</td>
+          <td>{{student.type_choices}}</td>
+          <td>{{student.type_detail_choices}}</td>
+          <td>{{student.cur_class}}</td>
+          <td><a href="{% url 'students:student-detail' student.pk %}">{{student.kor_name}}</a></td>
+          <td>{{student.eng_name}}</td>
+          <td>{{student.school}}</td>
+          <td>{{student.grade}}</td>
+          <td>{{student.sex}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    조건에 해당하는 원생이 검색되지 않았습니다.
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

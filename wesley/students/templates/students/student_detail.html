@@ -1,0 +1,151 @@
+{% extends 'students/base.html' %}
+
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+        <div class="card">
+
+            <table class="table table-bordered" style="text-align:center;">
+                <thead class="thead-light">
+                    <tr>
+                        <th width="30%" scope="col">이름</th>
+                        <th width="70%" scope="col">{{student.kor_name}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">상태</th>
+                        <td>{{student.status}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">유형</th>
+                        <td>{{student.type_choices}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">유형상세</th>
+                        <td>{{student.type_detail_choices}}</td>
+                    </tr>
+                    {% if student.status == '재원' %}
+                    <tr>
+                        <th scope="row">현재반</th>
+                        <td>{{student.cur_class}}</td>
+                    </tr>
+                    {%endif%}
+                    <tr>
+                        <th scope="row">이전반</th>
+                        <td>{{student.last_class}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">이동희망반</th>
+                        <td>{{student.want_class}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">영어이름</th>
+                        <td>{{student.eng_name}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">학교명</th>
+                        <td>{{student.school}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">학년</th>
+                        <td>{{student.grade}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">성별</th>
+                        <td>{{student.sex}}</td>
+                    </tr>
+                    {% if student.cell_phone %}
+                    <tr>
+                        <th scope="row">학생전화</th>
+                        <td>{{student.cell_phone}}</td>
+                    </tr>
+                    {% endif %}
+                    {% if student.cell_d %}
+                    <tr>
+                        <th scope="row" rowspan="2" style="vertical-align:middle">학부모전화</th>
+                        <td>어머님 - {{student.cell_m}}</td>
+                    </tr>
+                    <tr>
+                        <td>아버님 - {{student.cell_d}}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <th scope="row">학부모전화</th>
+                        <td>어머님 - {{student.cell_m}}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th scope="row">SMS 수신 여부</th>
+                        {% if student.get_sms %}
+                        <td>수신 허용</td>
+                        {% else %}
+                        <td>수신 거부</td>
+                        {% endif %}
+                    </tr>
+                    {% if student.quit_date is not None %}
+                    <tr>
+                        <th scope="row">입학일</th>
+                        <td>{{student.registration_date}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">휴/퇴원일</th>
+                        <td>{{student.quit_date}}</td>
+                    </tr>
+                    {% elif student.registration_date %}
+                    <tr>
+                        <th scope="row">입학일</th>
+                        <td>{{student.registration_date}}</td>
+                    </tr>
+                    {%endif %}
+                    <tr>
+                        <th scope="row">시</th>
+                        <td>{{student.si}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">구</th>
+                        <td>{{student.gu}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">동</th>
+                        <td>{{student.dong}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">상세주소</th>
+                        <td>{{student.detail_address}}</td>
+                    </tr>
+
+                    {% if consult_list %}
+                    <tr>
+                        <th scope="row" rowspan="{{consult_list|length|add:"1"}}" style="vertical-align:middle">상담
+                        </th>
+                    </tr>
+                    {% for consult in consult_list%}
+                    <tr>
+                        <td><a href="{% url 'students:consult-detail' consult.pk %}">{{consult.when_consult}},
+                                {{consult.title}}</a> by {{consult.counselor}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    {%endif %}
+                </tbody>
+            </table>
+            <div class='row'>
+                <div class='col-sm'>
+                </div>
+                <div class='col-sm'>
+                    <button type="button" class="btn btn-success"
+                        onclick="location.href='{% url "students:student-edit" pk=student.pk %}'">수정</button>
+                </div>
+                <div class='col-sm'>
+                </div>
+                <div class='col-sm'>
+                    <button type="button" class="btn btn-danger"
+                        onclick="location.href='{% url "students:student-delete" pk=student.pk %}'">삭제</button>
+                </div>
+                <div class='col-sm'>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endblock %}

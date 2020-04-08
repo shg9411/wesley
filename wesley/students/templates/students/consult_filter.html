@@ -1,0 +1,57 @@
+{% extends 'students/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+        <div class="card border-0 shadow my-5">
+            <div class='row'>
+                <div class='col' align='center'>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#searchCollapse" aria-expanded="false"
+                        aria-controls="searchCollapse">
+                        상담 검색
+                    </a>
+                </div>
+                <div class='col' align='center'>
+                    <a href="{% url 'students:consult-new' %}" class="btn btn-primary">상담 추가</a>
+                </div>
+            </div>
+            <div class="collapse" id="searchCollapse">
+                <div class="card-body p-5">
+                    <form method="get">
+                        {{ filter.form|crispy }}
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% if filter.qs %}
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>번호</th>
+                    <th scope='col'>원생</th>
+                    <th scope='col'>상담자</th>
+                    <th scope='col'>제목</th>
+                    <th scope='col'>상담일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for consult in filter.qs %}
+                <tr>
+                    <th scope='row'>{{forloop.counter}}</th>
+                    <td>{{consult.student}}</td>
+                    <td>{{consult.counselor}}</td>
+                    <td><a href="{% url 'students:consult-detail' consult.pk %}">{{consult.title}}</a></td>
+                    <td>{{consult.when_consult}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        조건에 해당하는 원생이 검색되지 않았습니다.
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

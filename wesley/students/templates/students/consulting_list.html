@@ -1,0 +1,77 @@
+{% extends 'students/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+        <div class="card border-0 shadow my-5">
+            <div class='row'>
+                <div class='col' align='center'>
+                    <a href="{% url 'students:consult-new' %}" class="btn btn-primary">상담 추가</a>
+                </div>
+            </div>
+        </div>
+
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>번호</th>
+                    <th scope='col'>원생</th>
+                    <th scope='col'>상담자</th>
+                    <th scope='col'>제목</th>
+                    <th scope='col'>상담일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for consult in object_list %}
+                <tr>
+                    <th scope='row'>{{forloop.counter}}</th>
+                    <td>{{consult.student}}</td>
+                    <td>{{consult.counselor}}</td>
+                    <td><a href="{% url 'students:consult-detail' consult.pk %}">{{consult.title}}</a></td>
+                    <td>{{consult.when_consult}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% if is_paginated  %}
+            <tfoot>
+                <tr>
+                    <td colspan='10'>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled"> <span class="page-link">&laquo;</span></li>
+                                {% endif %}
+
+                                {% for i in paginator.page_range %}
+
+                                {% if page_obj.number == i %}
+                                <li class="page-item active"><span class="page-link">{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+
+
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                {% else %}
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                {%endif %}
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            </tfoot>
+            {% endif %}
+        </table>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'students/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+        <div class="card border-0 shadow my-5">
+            <div class='row' align='center'>
+                <div class='col'>
+                    <a href="{% url 'students:student-new' %}" class="btn btn-link">학생 추가</a>
+                </div>
+                <div class='col btn-primary'>
+                    총원 {{총원}}
+                </div>
+                <div class='col'>
+                    배정 {{배정}}
+                </div>
+                <div class='col btn-primary'>
+                    미배정 {{미배정}}
+                </div>
+                <div class='col'>
+                    신규 {{신규}}
+                </div>
+                <div class='col btn-primary'>
+                    재입학 {{재입학}}
+                </div>
+            </div>
+
+        </div>
+
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>번호</th>
+                    <th scope='col'>상태</th>
+                    <th scope='col'>유형</th>
+                    <th scope='col'>유형상세</th>
+                    <th scope='col'>현재반</th>
+                    <th scope='col'>이름</th>
+                    <th scope='col'>영어이름</th>
+                    <th scope='col'>학교명</th>
+                    <th scope='col'>학년</th>
+                    <th scope='col'>성별</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in object_list %}
+                <tr>
+                    <th scope='row'>{{forloop.counter}}</th>
+                    <td>{{student.status}}</td>
+                    <td>{{student.type_choices}}</td>
+                    <td>{{student.type_detail_choices}}</td>
+                    <td>{{student.cur_class}}</td>
+                    <td><a href="{% url 'students:student-detail' student.pk %}">{{student.kor_name}}</a></td>
+                    <td>{{student.eng_name}}</td>
+                    <td>{{student.school}}</td>
+                    <td>{{student.grade}}</td>
+                    <td>{{student.sex}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% if is_paginated  %}
+            <tfoot>
+                <tr>
+                    <td colspan='10'>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled"> <span class="page-link">&laquo;</span></li>
+                                {% endif %}
+
+                                {% for i in paginator.page_range %}
+
+                                {% if page_obj.number == i %}
+                                <li class="page-item active"><span class="page-link">{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+
+
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                                {% else %}
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                {%endif %}
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            </tfoot>
+            {% endif %}
+        </table>
+
+
+    </div>
+</div>
+{% endblock %}
