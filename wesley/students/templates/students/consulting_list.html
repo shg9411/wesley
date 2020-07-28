@@ -25,7 +25,7 @@
             <tbody>
                 {% for consult in object_list %}
                 <tr>
-                    <th scope='row'>{{forloop.counter}}</th>
+                    <th scope='row'>{{ page_obj.start_index|add:forloop.counter0 }}</th>
                     <td>{{consult.student}}</td>
                     <td>{{consult.counselor}}</td>
                     <td><a href="{% url 'students:consult-detail' consult.pk %}">{{consult.title}}</a></td>

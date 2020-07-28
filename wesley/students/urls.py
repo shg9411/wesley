@@ -19,13 +19,11 @@ urlpatterns = [
     path('consults/<int:pk>/edit/', views.ConsultUV.as_view(), name='consult-edit'),
     path('students/<int:pk>/edit/', views.StudentUV.as_view(), name='student-edit'),
     path('students/create/', views.StudentCV.as_view(), name='student-new'),
-    path('schools/create/', views.SchoolCV.as_view(), name='school-new'),
     path('consults/create/', views.ConsultCV.as_view(), name='consult-new'),
     path('consults/search/', FilterView.as_view(filterset_class=ConsultFilter,
                                                 template_name='students/consult_filter.html'), name='consult-search'),
     path('students/search/', FilterView.as_view(filterset_class=StudentFilter,
                                                 template_name='students/student_filter.html'), name='student-search'),
     path('students/', views.StudentLV.as_view(), name='student-list'),
-    path('schools/', views.SchoolLV.as_view(), name='school-list'),
     path('consults/', views.ConsultLV.as_view(), name='consult-list'),
 ]

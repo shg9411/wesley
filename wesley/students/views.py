@@ -10,24 +10,15 @@ def index(request):
     return render(request, 'students/index.html')
 
 
-class SchoolCV(LoginRequiredMixin, CreateView):
-    login_url = '/login'
-    template_name = 'students/school_new.html'
-    success_url = '/schools'
-    form_class = SchoolForm
-
-
-class SchoolLV(ListView):
-    model = School
-    paginate_by = 20
-    queryset = School.objects.all()
-
-
 class ConsultCV(LoginRequiredMixin, CreateView):
     login_url = '/login'
     template_name = 'students/consult_new.html'
-    success_url = '/consults'
     form_class = ConsultForm
+
+    def get_initial(self):
+        return {
+            "counselor": self.request.user
+        }
 
 
 class ConsultDV(DetailView):
@@ -44,14 +35,13 @@ class ConsultLV(LoginRequiredMixin, ListView):
 class StudentLV(LoginRequiredMixin, ListView):
     login_url = '/login'
     model = Student
-    paginate_by = 20
-    #queryset = Student.objects.all()
+    paginate_by = 500
 
     def get_context_data(self, **kwargs):
         context = super(StudentLV, self).get_context_data(**kwargs)
-        context['총원'] = Student.objects.all().count()
         context['배정'] = Student.objects.filter(status='재원' or '휴원').count()
         context['미배정'] = Student.objects.filter(type_choices='미배정').count()
+        context['총원'] = context['배정']+context['미배정']
         context['신규'] = Student.objects.filter(
             type_choices='신규').count()
         context['재입학'] = Student.objects.filter(
@@ -62,7 +52,6 @@ class StudentLV(LoginRequiredMixin, ListView):
 class StudentCV(LoginRequiredMixin, CreateView):
     login_url = '/login'
     template_name = 'students/student_new.html'
-    success_url = '/students'
     form_class = StudentForm
 
 
@@ -72,7 +61,6 @@ class ConsultUV(LoginRequiredMixin, UpdateView):
     context_object_name = 'consulting'
     form_class = ConsultForm
     template_name = 'students/consulting_edit.html'
-    success_url = '/consults'
 
     def get_object(self):
         consult = get_object_or_404(Consulting, pk=self.kwargs['pk'])
@@ -85,7 +73,6 @@ class StudentUV(LoginRequiredMixin, UpdateView):
     context_object_name = 'student'
     form_class = StudentForm
     template_name = 'students/student_edit.html'
-    success_url = '/students'
 
     def get_object(self):
         student = get_object_or_404(Student, pk=self.kwargs['pk'])

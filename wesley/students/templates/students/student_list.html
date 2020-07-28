@@ -7,22 +7,34 @@
         <div class="card border-0 shadow my-5">
             <div class='row' align='center'>
                 <div class='col'>
-                    <a href="{% url 'students:student-new' %}" class="btn btn-link">학생 추가</a>
-                </div>
-                <div class='col btn-primary'>
-                    총원 {{총원}}
-                </div>
-                <div class='col'>
-                    배정 {{배정}}
-                </div>
-                <div class='col btn-primary'>
-                    미배정 {{미배정}}
+                    <div class='card'>
+                        <a href="{% url 'students:student-new' %}" class="btn btn-link">학생 추가</a>
+                    </div>
                 </div>
                 <div class='col'>
-                    신규 {{신규}}
+                    <div class='card'>
+                        <a class="btn btn-link">총원 {{총원}}</a>
+                    </div>
                 </div>
-                <div class='col btn-primary'>
-                    재입학 {{재입학}}
+                <div class='col'>
+                    <div class='card'>
+                        <a class="btn btn-link">배정 {{배정}}</a>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card'>
+                        <a class="btn btn-link">미배정 {{미배정}}</a>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card'>
+                        <a class="btn btn-link">신규 {{신규}}</a>
+                    </div>
+                </div>
+                <div class='col'>
+                    <div class='card'>
+                        <a class="btn btn-link">재입학 {{재입학}}</a>
+                    </div>
                 </div>
             </div>
 
@@ -46,7 +58,7 @@
             <tbody>
                 {% for student in object_list %}
                 <tr>
-                    <th scope='row'>{{forloop.counter}}</th>
+                    <th scope='row'>{{ page_obj.start_index|add:forloop.counter0 }}</th>
                     <td>{{student.status}}</td>
                     <td>{{student.type_choices}}</td>
                     <td>{{student.type_detail_choices}}</td>
@@ -97,8 +109,6 @@
             </tfoot>
             {% endif %}
         </table>
-
-
     </div>
 </div>
 {% endblock %}

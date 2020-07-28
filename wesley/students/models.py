@@ -530,11 +530,15 @@ class Student(models.Model):
 
     class Meta:
         ordering = ['status', 'cur_class', 'kor_name', ]
+        unique_together = (('kor_name', 'eng_name', 'cell_m'),)
 
     def __str__(self):
         return '{} {} ({})'.format(self.cur_class, self.kor_name, self.eng_name)
 
     def get_absolute_url(self):
+        return reverse('students:student-detail', args=[self.pk])
+
+    def get_success_url(self):
         return reverse('students:student-detail', args=[self.pk])
 
 
@@ -551,3 +555,9 @@ class Consulting(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.student, self.title)
+
+    def get_success_url(self):
+        return reverse('students:consult-detail', args=[self.pk])
+    
+    def get_absolute_url(self):
+        return reverse('students:consult-detail', args=[self.pk])
